@@ -39,7 +39,8 @@ func main() {
 	}()
 
 	customerHandler := buildCustomerHandler(db)
-	engine := http.NewGinEngine(customerHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
+	orderHandler := buildOrderHandler(db)
+	engine := http.NewGinEngine(customerHandler, orderHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
 
 	server := &nethttp.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
@@ -104,6 +105,12 @@ func checkError(err error) {
 
 func buildCustomerHandler(db *gorm.DB) *http.CustomerHandler {
 	repo := repository.NewCustomerRepository(db)
-	barangService := service.NewCustomerService(repo)
-	return http.NewCustomerHandler(barangService)
+	customerService := service.NewCustomerService(repo)
+	return http.NewCustomerHandler(customerService)
+}
+
+func buildOrderHandler(db *gorm.DB) *http.OrderHandler {
+	repo := repository.NewOrderRepository(db)
+	orderService := service.NewOrderService(repo)
+	return http.NewOrderHandler(orderService)
 }
