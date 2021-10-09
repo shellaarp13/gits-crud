@@ -54,7 +54,7 @@ open directory myapp
 open terminal and please running command "go mod vendor"
 wait process and if success to create vendor this application can copy all importing file in folder vendor
 open terminal and please running command "go build app/main.go"
-wait process and if success application was created file in myapp directiori, this file is "main"
+wait process and if success application was created file in myapp directory, this file is "main"
 running application from your terminal and open file "main"
 dont close terminal if you can running application, for exit you can closing terminal or press ctrl + c in terminal
 ```
