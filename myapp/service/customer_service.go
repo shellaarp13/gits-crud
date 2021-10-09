@@ -62,7 +62,7 @@ func (svc CustomerService) Create(ctx context.Context, customer *entity.Customer
 func (svc CustomerService) GetListCustomer(ctx context.Context, limit, offset string) ([]*entity.Customer, error) {
 	customer, err := svc.customerRepo.GetListCustomer(ctx, limit, offset)
 	if err != nil {
-		return nil, errors.Wrap(err, "[CustomerService-Create]")
+		return nil, errors.Wrap(err, "[CustomerService-List]")
 	}
 	return customer, nil
 }
@@ -70,7 +70,7 @@ func (svc CustomerService) GetListCustomer(ctx context.Context, limit, offset st
 func (svc CustomerService) GetDetailCustomer(ctx context.Context, ID uuid.UUID) (*entity.Customer, error) {
 	customer, err := svc.customerRepo.GetDetailCustomer(ctx, ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "[CustomerService-Create]")
+		return nil, errors.Wrap(err, "[CustomerService-Detail]")
 	}
 	return customer, nil
 }
@@ -78,7 +78,7 @@ func (svc CustomerService) GetDetailCustomer(ctx context.Context, ID uuid.UUID) 
 func (svc CustomerService) DeleteCustomer(ctx context.Context, ID uuid.UUID) error {
 	err := svc.customerRepo.DeleteCustomer(ctx, ID)
 	if err != nil {
-		return errors.Wrap(err, "[CustomerService-Create]")
+		return errors.Wrap(err, "[CustomerService-Delete]")
 	}
 	return nil
 }

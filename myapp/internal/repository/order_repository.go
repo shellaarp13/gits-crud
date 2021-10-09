@@ -70,7 +70,7 @@ func (repo *OrderRepository) UpdateOrder(ctx context.Context, ent *entity.Order)
 	if err := repo.db.
 		WithContext(ctx).
 		Model(&entity.Order{Order_Number: ent.Order_Number}).
-		Select("first_name", "last_name", "street", "zip", "phone").
+		Select("customer_id", "customer_name", "to_street", "to_city", "to_zip", "ship_date").
 		Updates(ent).Error; err != nil {
 		return errors.Wrap(err, "[OrderRepository-Update]")
 	}
