@@ -9,6 +9,6 @@ import (
 
 // Health returns health check for the service.
 func Health(echoCtx echo.Context) error {
-	var res = entity.NewResponse(http.StatusOK, "It is work v2!", nil)
+	var res = entity.NewResponse(http.StatusOK, "It is work v2! By Risky & Pramaishella", nil)
 	return echoCtx.JSON(res.Status, res)
 }
