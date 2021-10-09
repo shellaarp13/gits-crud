@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	OrderTableName = "dosen"
+	OrderTableName = "order"
 )
 
 // OrderModel is a model for entity.Order
@@ -19,6 +19,7 @@ type Order struct {
 	To_city       string    `gorm:"type:varchar(50);not_null" json:"to_city"`
 	To_zip        string    `gorm:"type:varchar(10);not_null" json:"to_zip"`
 	Ship_date     time.Time `gorm:"type:timestamptz;not_null" json:"ship_date"`
+	Customer      *Customer `gorm:"foreignKey:Customer_ID" json:"for_customer_id"`
 	Auditable
 }
 
