@@ -12,7 +12,7 @@
 - This application can develop in golang version 1.7
 
 ## Requirement Application
-- golang version 1.7
+- Golang version 1.7
 - Postgresql
 
 ## Directory Application
