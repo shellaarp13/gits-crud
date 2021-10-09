@@ -114,3 +114,21 @@ func buildOrderHandler(db *gorm.DB) *http.OrderHandler {
 	orderService := service.NewOrderService(repo)
 	return http.NewOrderHandler(orderService)
 }
+
+func buildAccountHandler(db *gorm.DB) *http.AccountHandler {
+	repo := repository.NewAccountHandlerRepository(db)
+	accountService := service.NewAccountService(repo)
+	return http.NewAccountHandler(accountService)
+}
+
+func buildOrderDetailsHandler(db *gorm.DB) *http.OrderDetailsHandler {
+	repo := repository.NewOderDetailsRepository(db)
+	orderService := service.NewOrderDetailsService(repo)
+	return http.NewOrderDetailsHandler(orderService)
+}
+
+func buildProductHandler(db *gorm.DB) *hhtp.ProductHandler {
+	repo := repository.NewProductRepository(db)
+	productService := service.NewProductService(repo)
+	return http.NewProductHandler(productService)
+}
