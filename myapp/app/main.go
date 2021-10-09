@@ -15,8 +15,8 @@ import (
 
 	"myapp/internal/config"
 	"myapp/internal/handler/http"
-	// "myapp/internal/repository"
-	// "myapp/service"
+	"myapp/internal/repository"
+	"myapp/service"
 )
 
 func main() {
@@ -38,9 +38,8 @@ func main() {
 		}
 	}()
 
-	// entityHandler := buildEntityHandler(db)
-	// entityHandler -> add to NewGinEngine()
-	engine := http.NewGinEngine(cfg.InternalConfig.Username, cfg.InternalConfig.Password)
+	customerHandler := buildCustomerHandler(db)
+	engine := http.NewGinEngine(customerHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
 
 	server := &nethttp.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
@@ -103,8 +102,8 @@ func checkError(err error) {
 	}
 }
 
-// func buildEntityHandler(db *gorm.DB) *http.EntityHandler {
-// 	repo := repository.NewEntityRepository(db)
-// 	barangService := service.NewEntityService(repo)
-// 	return http.NewEntityHandler(barangService)
-// }
+func buildCustomerHandler(db *gorm.DB) *http.CustomerHandler {
+	repo := repository.NewCustomerRepository(db)
+	barangService := service.NewCustomerService(repo)
+	return http.NewCustomerHandler(barangService)
+}
