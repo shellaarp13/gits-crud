@@ -50,6 +50,7 @@ require (
 )
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

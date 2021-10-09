@@ -5,7 +5,7 @@ import (
 	"os"
 	"sort"
 
-	// "myapp/entity"
+	"myapp/entity"
 	"myapp/internal/config"
 
 	"github.com/rs/zerolog"
@@ -37,8 +37,10 @@ func main() {
 
 	// Migrate rest of the models
 	log.Info().Msg("AutoMigrate Model [table_name]")
-	// db.AutoMigrate(&entity.Entitynya{})
-	// log.Info().Msg("EntitynyaModel [" + (&entity.Entitynya{}).TableName() + "]")
+	db.AutoMigrate(&entity.Customer{})
+	log.Info().Msg("CustomerModel [" + (&entity.Customer{}).TableName() + "]")
+	db.AutoMigrate(&entity.Order{})
+	log.Info().Msg("OrderModel [" + (&entity.Order{}).TableName() + "]")
 }
 
 func executePendingMigrations(db *gorm.DB) {
