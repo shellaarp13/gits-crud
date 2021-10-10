@@ -49,7 +49,8 @@ func (repo *AccountRepository) GetDetailAccount(ctx context.Context, Username st
 	if err := repo.db.
 		WithContext(ctx).
 		Where("username = ?", Username).
-		Find(&models).
+		First(&entity.Account{}).
+		Take(&models).
 		Error; err != nil {
 		return nil, errors.Wrap(err, "[AccountRepository-FindById]")
 	}

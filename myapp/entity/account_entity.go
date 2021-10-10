@@ -1,7 +1,7 @@
 package entity
 
 const (
-	AccountTableName = "Account"
+	AccountTableName = "account"
 )
 
 //AccountModel is a model for entity.Account
