@@ -14,12 +14,12 @@ import (
 // CreateOrderDetailsBodyRequest defines all body attributes needed to add order.
 type CreateOrderDetailsBodyRequest struct {
 	Order_details_id uuid.UUID `gorm:"json:"customer_id" binding:"required"`
-	Oder_number      string    `gorm:"json:"customer_name" binding:"required"`
+	Order_number      string    `gorm:"json:"customer_name" binding:"required"`
 	Product_id       string    `gorm:"json:"to_street" binding:"required"`
 	Quantity_product string    `gorm:"json:"to_city" binding:"required"`
 }
 
-// OrderDetailsRowResponse defines all attributes needed to fulfill for order row entity.
+// OrderDetailsRowResponse defines all attributes needed to fulfill for orderdetails row entity.
 type OrderDetailsRowResponse struct {
 	Order_details_id uuid.UUID `gorm:"json:"order_details_id"`
 	Order_Number     string    `gorm:"json:"order_number"`
@@ -27,7 +27,7 @@ type OrderDetailsRowResponse struct {
 	Quantity_product string    `gorm:"json:"quantity_product"`
 }
 
-// OrderDetailsResponse defines all attributes needed to fulfill for pic order entity.
+// OrderDetailsResponse defines all attributes needed to fulfill for pic orderdetails entity.
 type OrderDetailsDetailResponse struct {
 	Order_details_id uuid.UUID `gorm:"json:"order_details_id"`
 	Order_Number     string    `gorm:"json:"order_number"`
@@ -127,12 +127,12 @@ func (handler *OrderDetailsHandler) GetListOrderDetails(echoCtx echo.Context) er
 		return echoCtx.JSON(nethttp.StatusBadRequest, errorResponse)
 	}
 
-	order, err := handler.service.GetListOrderDetails(echoCtx.Request().Context(), form.Limit, form.Offset)
+	order_details, err := handler.service.GetListOrderDetails(echoCtx.Request().Context(), form.Limit, form.Offset)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
-	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", order)
+	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", order_details)
 	return echoCtx.JSON(res.Status, res)
 
 }
@@ -216,7 +216,7 @@ func (handler *OrderDetailsHandler) DeleteOrderDetails(echoCtx echo.Context) err
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	err = handler.service.DeleteOrder(echoCtx.Request().Context(), id)
+	err = handler.service.DeleteOrderDetails(echoCtx.Request().Context(), id)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
