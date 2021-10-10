@@ -9,12 +9,12 @@ const (
 )
 
 type order_details struct {
-	Oder_details_id  uuid.UUID `gorm:type:uuid;not_null" json:"oder_details"`
+	Oder_details_id  uuid.UUID `gorm:type:uuid;primary_key" json:"oder_details"`
 	Oder_number      int64     `gorm:type:integer;not_null" json:"oder_number"`
 	Product_id       uuid.UUID `gorm:type:uuid;not_null" json:"product_id"`
 	Quantity_product int64     `gorm:type:integer;not_null" json:"quantity_product"`
-	Order            *Order    `gorm:type:"foreignKey:Order_number" json:"for_order_number`
-	Product          *Product  `gorm:type:"foreignKey:Product_id" json:"for_product_id"`
+	Order            *Order    `gorm:"foreignKey:Order_number" json:"order_number`
+	Product          *Product  `gorm:"foreignKey:Product_id" json:"product_id"`
 	Auditable
 }
 
