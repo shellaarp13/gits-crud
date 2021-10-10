@@ -45,8 +45,8 @@ func main() {
 	log.Info().Msg("OrderModel [" + (&entity.Order{}).TableName() + "]")
 	db.AutoMigrate(&entity.Product{})
 	log.Info().Msg("ProductModel [" + (&entity.Product{}).TableName() + "]")
-	db.AutoMigrate(&entity.Order_details{})
-	log.Info().Msg("OderDetailsModel [" + (&entity.Order_details{}).TableName() + "]")
+	db.AutoMigrate(&entity.Order_Details{})
+	log.Info().Msg("OderDetailsModel [" + (&entity.Order_Details{}).TableName() + "]")
 }
 
 func executePendingMigrations(db *gorm.DB) {

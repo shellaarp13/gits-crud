@@ -12,7 +12,7 @@ const (
 
 // OrderModel is a model for entity.Order
 type Order struct {
-	Order_Number  uuid.UUID `gorm:"type:uuid;not_null" json:"order_number"`
+	Order_Number  uuid.UUID `gorm:"type:uuid;primary_key" json:"order_number"`
 	Customer_ID   uuid.UUID `gorm:"type:uuid;not_null" json:"customer_id"`
 	Customer_Name string    `gorm:"type:varchar(50);not_null" json:"customer_name"`
 	To_street     string    `gorm:"type:varchar(100);not_null" json:"to_street"`
