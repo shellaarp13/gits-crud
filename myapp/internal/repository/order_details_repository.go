@@ -22,7 +22,7 @@ func NewOrderDetailsRepository(db *gorm.DB) *OrderDetailsRepository {
 }
 
 // Insert inserts order_details data to database.
-func (repo *OrderDetailsRepository) Insert(ctx context.Context, ent *entity.OrderDetails) error {
+func (repo *OrderDetailsRepository) Insert(ctx context.Context, ent *entity.Order_details) error {
 	if err := repo.db.
 		WithContext(ctx).
 		Model(&entity.OrderDetails{}).
@@ -33,8 +33,8 @@ func (repo *OrderDetailsRepository) Insert(ctx context.Context, ent *entity.Orde
 	return nil
 }
 
-func (repo *OrderDetailsRepository) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.OrderDetails, error) {
-	var models []*entity.OrderDetails
+func (repo *OrderDetailsRepository) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error) {
+	var models []*entity.Order_details
 	if err := repo.db.
 		WithContext(ctx).
 		Model(&entity.OrderDetails{}).
@@ -45,8 +45,8 @@ func (repo *OrderDetailsRepository) GetListOrderDetails(ctx context.Context, lim
 	return models, nil
 }
 
-func (repo *OrderDetailsRepository) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.OrderDetails, error) {
-	var models *entity.OrderDetails
+func (repo *OrderDetailsRepository) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error) {
+	var models *entity.Order_details
 	if err := repo.db.
 		WithContext(ctx).
 		Model(&entity.OrderDetails{}).
@@ -60,16 +60,16 @@ func (repo *OrderDetailsRepository) GetDetailOrderDetails(ctx context.Context, I
 func (repo *OrderDetailsRepository) DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Delete(&entity.OrderDetails{OrderDetails_ID: ID}).Error; err != nil {
+		Delete(&entity.OrderDetails{Order_details_ID: ID}).Error; err != nil {
 		return errors.Wrap(err, "[OrderDetailsRepository-Delete]")
 	}
 	return nil
 }
 
-func (repo *OrderDetailsRepository) UpdateOrderDetails(ctx context.Context, ent *entity.OrderDetails) error {
+func (repo *Order_detailsRepository) UpdateOrder_details(ctx context.Context, ent *entity.Order_details) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.OrderDetails{OrderDetails_ID: ent.OrderDetails_ID}).
+		Model(&entity.Order_details{OrderDetails_ID: ent.OrderDetails_ID}).
 		Select("order_number", "product_id", "quantity_product").
 		Updates(ent).Error; err != nil {
 		return errors.Wrap(err, "[OrderDetailsRepository-Update]")
