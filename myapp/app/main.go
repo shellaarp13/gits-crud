@@ -41,9 +41,9 @@ func main() {
 	accountHandler := buildAccountHandler(db)
 	customerHandler := buildCustomerHandler(db)
 	orderHandler := buildOrderHandler(db)
-	orderdetailsHandler := buildOrderDetailsHandler(db)
 	productHandler := buildProductHandler(db)
-	engine := http.NewGinEngine(accountHandler, customerHandler, orderHandler, orderdetailsHandler, ProductHandler*productHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
+	orderdetailsHandler := buildOrderDetailsHandler(db)
+	engine := http.NewGinEngine(accountHandler, customerHandler, orderHandler, productHandler, orderdetailsHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
 
 	server := &nethttp.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
@@ -124,14 +124,14 @@ func buildOrderHandler(db *gorm.DB) *http.OrderHandler {
 	return http.NewOrderHandler(orderService)
 }
 
-func buildOrderDetailsHandler(db *gorm.DB) *http.OrderDetailsHandler {
-	repo := repository.NewOrderDetailsRepository(db)
-	orderdetailsService := service.NewOrderDetailsService(repo)
-	return http.NewOrderDetailsHandler(orderdetailsService)
-}
-
 func buildProductHandler(db *gorm.DB) *http.ProductHandler {
 	repo := repository.NewProductRepository(db)
 	productService := service.NewProductService(repo)
 	return http.NewProductHandler(productService)
+}
+
+func buildOrderDetailsHandler(db *gorm.DB) *http.Order_DetailsHandler {
+	repo := repository.NewOrder_DetailsRepository(db)
+	orderdetailsService := service.NewOrder_DetailsService(repo)
+	return http.NewOrder_DetailsHandler(orderdetailsService)
 }

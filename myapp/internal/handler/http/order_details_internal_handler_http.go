@@ -13,52 +13,51 @@ import (
 
 // CreateOrderDetailsBodyRequest defines all body attributes needed to add order.
 type CreateOrderDetailsBodyRequest struct {
-	Order_details_id uuid.UUID `gorm:"json:"customer_id" binding:"required"`
-	Order_number      string    `gorm:"json:"customer_name" binding:"required"`
-	Product_id       string    `gorm:"json:"to_street" binding:"required"`
-	Quantity_product string    `gorm:"json:"to_city" binding:"required"`
+	Order_Number     uuid.UUID `gorm:"json:"order_details_name" binding:"required"`
+	Product_ID       uuid.UUID `gorm:"json:"to_street" binding:"required"`
+	Quantity_product int32     `gorm:"json:"to_city" binding:"required"`
 }
 
 // OrderDetailsRowResponse defines all attributes needed to fulfill for orderdetails row entity.
 type OrderDetailsRowResponse struct {
 	Order_details_id uuid.UUID `gorm:"json:"order_details_id"`
-	Order_Number     string    `gorm:"json:"order_number"`
-	Product_id       string    `gorm:"json:"product_id"`
-	Quantity_product string    `gorm:"json:"quantity_product"`
+	Order_Number     uuid.UUID `gorm:"json:"order_number"`
+	Product_ID       uuid.UUID `gorm:"json:"product_id"`
+	Quantity_product int32     `gorm:"json:"quantity_product"`
 }
 
 // OrderDetailsResponse defines all attributes needed to fulfill for pic orderdetails entity.
 type OrderDetailsDetailResponse struct {
 	Order_details_id uuid.UUID `gorm:"json:"order_details_id"`
-	Order_Number     string    `gorm:"json:"order_number"`
-	Product_id       string    `gorm:"json:"product_id"`
-	Quantity_product string    `gorm:"json:"quantity_product"`
+	Order_Number     uuid.UUID `gorm:"json:"order_number"`
+	Product_ID       uuid.UUID `gorm:"json:"product_id"`
+	Quantity_product int32     `gorm:"json:"quantity_product"`
 }
 
-func buildOrderDetailsRowResponse(order_details *entity.OrderDetails) OrderDetailsRowResponse {
+func buildOrderDetailsRowResponse(order_details *entity.Order_Details) OrderDetailsRowResponse {
 	form := OrderDetailsRowResponse{
 		Order_details_id: order_details.Order_details_id,
 		Order_Number:     order_details.Order_Number,
-		Product_id:       order_details.Product_id,
+		Product_ID:       order_details.Product_ID,
 		Quantity_product: order_details.Quantity_product,
 	}
 
 	return form
 }
 
-func buildOrderDetailsDetailResponse(order_details *entity.OrderDetails) OrderDetailsDetailResponse {
+func buildOrderDetailsDetailResponse(order_details *entity.Order_Details) OrderDetailsDetailResponse {
 	form := OrderDetailsDetailResponse{
-		Order_details_id: order_details.oder_details_id,
+		Order_details_id: order_details.Order_details_id,
 		Order_Number:     order_details.Order_Number,
-		Product_id:       order_details.Product_id,
+		Product_ID:       order_details.Product_ID,
 		Quantity_product: order_details.Quantity_product,
 	}
 
 	return form
 }
 
-// QueryParamsOrderDetails defines all attributes for input query params
-type QueryParamsOrderDetails struct {
+// QueryParamsOrder_Details defines all attributes for input query params
+type QueryParamsOrder_Details struct {
 	Limit  string `form:"limit"`
 	Offset string `form:"offset"`
 	SortBy string `form:"sort_by"`
@@ -66,37 +65,37 @@ type QueryParamsOrderDetails struct {
 	Status string `form:"status"`
 }
 
-// MetaOrderDetails define attributes needed for Meta
-type MetaOrderDetails struct {
+// MetaOrder_Details define attributes needed for Meta
+type MetaOrder_Details struct {
 	Limit  int   `json:"limit"`
 	Offset int   `json:"offset"`
 	Total  int64 `json:"total"`
 }
 
-// NewMetaOrderDetails creates an instance of Meta response.
-func NewMetaOrderDetails(limit, offset int, total int64) *MetaOrderDetails {
-	return &MetaOrderDetails{
+// NewMetaOrder_Details creates an instance of Meta response.
+func NewMetaOrder_Details(limit, offset int, total int64) *MetaOrder_Details {
+	return &MetaOrder_Details{
 		Limit:  limit,
 		Offset: offset,
 		Total:  total,
 	}
 }
 
-// OrderDetailsHandler handles HTTP request related to user flow.
-type OrderDetailsHandler struct {
-	service service.OrderUseCase
+// Order_DetailsHandler handles HTTP request related to user flow.
+type Order_DetailsHandler struct {
+	service service.Order_DetailsUseCase
 }
 
-// NewOrderDetailsHandler creates an instance of OrderDetailsHandler.
-func NewOrderDetailsHandler(service service.OrderDetailsUseCase) *OrderDetailsHandler {
-	return &OrderDetailsHandler{
+// NewOrder_DetailsHandler creates an instance of Order_DetailsHandler.
+func NewOrder_DetailsHandler(service service.Order_DetailsUseCase) *Order_DetailsHandler {
+	return &Order_DetailsHandler{
 		service: service,
 	}
 }
 
 // Create handles article creation.
 // It will reject the request if the request doesn't have required data,
-func (handler *OrderDetailsHandler) CreateOrderDetails(echoCtx echo.Context) error {
+func (handler *Order_DetailsHandler) CreateOrder_Details(echoCtx echo.Context) error {
 	var form CreateOrderDetailsBodyRequest
 	if err := echoCtx.Bind(&form); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
@@ -106,8 +105,8 @@ func (handler *OrderDetailsHandler) CreateOrderDetails(echoCtx echo.Context) err
 
 	order_detailsEntity := entity.NewOrderDetails(
 		uuid.Nil,
-		form.Oder_number,
-		form.Product_id,
+		form.Order_Number,
+		form.Product_ID,
 		form.Quantity_product,
 	)
 
@@ -120,14 +119,14 @@ func (handler *OrderDetailsHandler) CreateOrderDetails(echoCtx echo.Context) err
 	return echoCtx.JSON(res.Status, res)
 }
 
-func (handler *OrderDetailsHandler) GetListOrderDetails(echoCtx echo.Context) error {
-	var form QueryParamsOrderDetails
+func (handler *Order_DetailsHandler) GetListOrder_Details(echoCtx echo.Context) error {
+	var form QueryParamsOrder_Details
 	if err := echoCtx.Bind(&form); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
 		return echoCtx.JSON(nethttp.StatusBadRequest, errorResponse)
 	}
 
-	order_details, err := handler.service.GetListOrderDetails(echoCtx.Request().Context(), form.Limit, form.Offset)
+	order_details, err := handler.service.GetListOrder_Details(echoCtx.Request().Context(), form.Limit, form.Offset)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
@@ -137,7 +136,7 @@ func (handler *OrderDetailsHandler) GetListOrderDetails(echoCtx echo.Context) er
 
 }
 
-func (handler *OrderDetailsHandler) GetDetailOrderDetails(echoCtx echo.Context) error {
+func (handler *Order_DetailsHandler) GetDetailOrder_Details(echoCtx echo.Context) error {
 	idParam := echoCtx.Param("id")
 	if len(idParam) == 0 {
 		errorResponse := buildErrorResponse(nil, entity.ErrInvalidInput)
@@ -150,7 +149,7 @@ func (handler *OrderDetailsHandler) GetDetailOrderDetails(echoCtx echo.Context) 
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	order_details, err := handler.service.GetDetailOrderDetails(echoCtx.Request().Context(), id)
+	order_details, err := handler.service.GetDetailOrder_Details(echoCtx.Request().Context(), id)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
@@ -160,7 +159,7 @@ func (handler *OrderDetailsHandler) GetDetailOrderDetails(echoCtx echo.Context) 
 	return echoCtx.JSON(res.Status, res)
 }
 
-func (handler *OrderDetailsHandler) UpdateOrderDetails(echoCtx echo.Context) error {
+func (handler *Order_DetailsHandler) UpdateOrder_Details(echoCtx echo.Context) error {
 	var form CreateOrderDetailsBodyRequest
 	if err := echoCtx.Bind(&form); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
@@ -181,20 +180,20 @@ func (handler *OrderDetailsHandler) UpdateOrderDetails(echoCtx echo.Context) err
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	_, err = handler.service.GetDetailOrder(echoCtx.Request().Context(), id)
+	_, err = handler.service.GetDetailOrder_Details(echoCtx.Request().Context(), id)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	order_detailsEntity := &entity.OrderDetails{
+	order_detailsEntity := &entity.Order_Details{
 		Order_details_id: id,
-		Order_number:     form.Oder_number,
-		Product_id:       form.Product_id,
+		Order_Number:     form.Order_Number,
+		Product_ID:       form.Product_ID,
 		Quantity_product: form.Quantity_product,
 	}
 
-	if err := handler.service.UpdateOrderDetails(echoCtx.Request().Context(), order_detailsEntity); err != nil {
+	if err := handler.service.UpdateOrder_Details(echoCtx.Request().Context(), order_detailsEntity); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
@@ -203,7 +202,7 @@ func (handler *OrderDetailsHandler) UpdateOrderDetails(echoCtx echo.Context) err
 	return echoCtx.JSON(res.Status, res)
 }
 
-func (handler *OrderDetailsHandler) DeleteOrderDetails(echoCtx echo.Context) error {
+func (handler *Order_DetailsHandler) DeleteOrder_Details(echoCtx echo.Context) error {
 	idParam := echoCtx.Param("id")
 	if len(idParam) == 0 {
 		errorResponse := buildErrorResponse(nil, entity.ErrInvalidInput)
@@ -216,7 +215,7 @@ func (handler *OrderDetailsHandler) DeleteOrderDetails(echoCtx echo.Context) err
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	err = handler.service.DeleteOrderDetails(echoCtx.Request().Context(), id)
+	err = handler.service.DeleteOrder_Details(echoCtx.Request().Context(), id)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)

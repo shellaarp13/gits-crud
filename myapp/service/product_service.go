@@ -13,7 +13,7 @@ var (
 	ErrNilProduct = errors.New("Product is nil")
 )
 
-// ProductService responsible for any flow related to customer.
+// ProductService responsible for any flow related to product.
 // It also implements ProductService.
 type ProductService struct {
 	productRepo ProductRepository

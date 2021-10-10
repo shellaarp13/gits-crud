@@ -9,93 +9,93 @@ import (
 )
 
 var (
-	// ErrNilOrderDetails occurs when a nil order details is passed.
-	ErrNilOrderDetails = errors.New("order details is nil")
+	// ErrNilOrder_Details occurs when a nil order_details is passed.
+	ErrNilOrder_Details = errors.New("order_details is nil")
 )
 
-// OrderDetailsService responsible for any flow related to OrderDetails.
-// It also implements OrderDetailsService.
-type OrderDetailsService struct {
-	orderdetailsRepo OrderDetailsRepository
+// Order_DetailsService responsible for any flow related to order_details.
+// It also implements Order_DetailsService.
+type Order_DetailsService struct {
+	order_detailsRepo Order_DetailsRepository
 }
 
-// NewOrderDetailsService creates an instance of OrderDetailsService.
-func NewOrderDetailsService(orderdetailsRepo OrderDetailsRepository) *OrderDetailsService {
-	return &OrderDetailsService{
-		orderdetailsRepo: orderdetailsRepo,
+// NewOrder_DetailsService creates an instance of Order_DetailsService.
+func NewOrder_DetailsService(order_detailsRepo Order_DetailsRepository) *Order_DetailsService {
+	return &Order_DetailsService{
+		order_detailsRepo: order_detailsRepo,
 	}
 }
 
-type OrderDetailsUseCase interface {
-	Create(ctx context.Context, orderdetails *entity.Order_details) error
-	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error)
-	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error)
-	UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error
-	DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error
+type Order_DetailsUseCase interface {
+	Create(ctx context.Context, order_details *entity.Order_Details) error
+	GetListOrder_Details(ctx context.Context, limit, offset string) ([]*entity.Order_Details, error)
+	GetDetailOrder_Details(ctx context.Context, ID uuid.UUID) (*entity.Order_Details, error)
+	UpdateOrder_Details(ctx context.Context, order_details *entity.Order_Details) error
+	DeleteOrder_Details(ctx context.Context, ID uuid.UUID) error
 }
 
-type OrderDetailsRepository interface {
-	Insert(ctx context.Context, orderdetails *entity.Order_details) error
-	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error)
-	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error)
-	UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error
-	DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error
+type Order_DetailsRepository interface {
+	Insert(ctx context.Context, order_details *entity.Order_Details) error
+	GetListOrder_Details(ctx context.Context, limit, offset string) ([]*entity.Order_Details, error)
+	GetDetailOrder_Details(ctx context.Context, ID uuid.UUID) (*entity.Order_Details, error)
+	UpdateOrder_Details(ctx context.Context, order_details *entity.Order_Details) error
+	DeleteOrder_Details(ctx context.Context, ID uuid.UUID) error
 }
 
-func (svc OrderDetailsService) Create(ctx context.Context, orderdetails *entity.Order_details) error {
-	// Checking nil order details
-	if orderdetails == nil {
-		return ErrNilOrderDetails
+func (svc Order_DetailsService) Create(ctx context.Context, order_details *entity.Order_Details) error {
+	// Checking nil order_details
+	if order_details == nil {
+		return ErrNilOrder_Details
 	}
 
 	// Generate id if nil
-	if orderdetails.OrderDetails_ID == uuid.Nil {
-		orderdetails.OrderDetails_ID = uuid.New()
+	if order_details.Order_details_id == uuid.Nil {
+		order_details.Order_details_id = uuid.New()
 	}
 
-	if err := svc.orderdetailsRepo.Insert(ctx, orderdetails); err != nil {
-		return errors.Wrap(err, "[OrderDetailsService-Create]")
+	if err := svc.order_detailsRepo.Insert(ctx, order_details); err != nil {
+		return errors.Wrap(err, "[Order_DetailsService-Create]")
 	}
 	return nil
 }
 
-func (svc OrderDetailsService) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error) {
-	orderdetails, err := svc.orderdetailsRepo.GetListOrderDetails(ctx, limit, offset)
+func (svc Order_DetailsService) GetListOrder_Details(ctx context.Context, limit, offset string) ([]*entity.Order_Details, error) {
+	order_details, err := svc.order_detailsRepo.GetListOrder_Details(ctx, limit, offset)
 	if err != nil {
-		return nil, errors.Wrap(err, "[OrderDetailsService-List]")
+		return nil, errors.Wrap(err, "[Order_DetailsService-List]")
 	}
-	return orderdetails, nil
+	return order_details, nil
 }
 
-func (svc OrderDetailsService) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error) {
-	orderdetails, err := svc.orderdetailsRepo.GetDetailOrderDetails(ctx, ID)
+func (svc Order_DetailsService) GetDetailOrder_Details(ctx context.Context, ID uuid.UUID) (*entity.Order_Details, error) {
+	order_details, err := svc.order_detailsRepo.GetDetailOrder_Details(ctx, ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "[OrderDetailsService-Detail]")
+		return nil, errors.Wrap(err, "[Order_DetailsService-Detail]")
 	}
-	return orderdetails, nil
+	return order_details, nil
 }
 
-func (svc OrderDetailsService) DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error {
-	err := svc.orderdetailsRepo.DeleteOrderDetails(ctx, ID)
+func (svc Order_DetailsService) DeleteOrder_Details(ctx context.Context, ID uuid.UUID) error {
+	err := svc.order_detailsRepo.DeleteOrder_Details(ctx, ID)
 	if err != nil {
-		return errors.Wrap(err, "[OrderDetailsService-Delete]")
+		return errors.Wrap(err, "[Order_DetailsService-Delete]")
 	}
 	return nil
 }
 
-func (svc OrderDetailsService) UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error {
-	// Checking nil order details
-	if orderdetails == nil {
-		return ErrNilOrderDetails
+func (svc Order_DetailsService) UpdateOrder_Details(ctx context.Context, order_details *entity.Order_Details) error {
+	// Checking nil order_details
+	if order_details == nil {
+		return ErrNilOrder_Details
 	}
 
 	// Generate id if nil
-	if orderdetails.OrderDetails_ID == uuid.Nil {
-		orderdetails.OrderDetails_ID = uuid.New()
+	if order_details.Order_details_id == uuid.Nil {
+		order_details.Order_details_id = uuid.New()
 	}
 
-	if err := svc.orderdetailsRepo.UpdateOrderDetails(ctx, orderdetails); err != nil {
-		return errors.Wrap(err, "[OrderDetailsService-Update]")
+	if err := svc.order_detailsRepo.UpdateOrder_Details(ctx, order_details); err != nil {
+		return errors.Wrap(err, "[Order_DetailsService-Update]")
 	}
 	return nil
 }

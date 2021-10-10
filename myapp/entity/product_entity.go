@@ -10,13 +10,13 @@ const (
 
 type Product struct {
 	Product_ID   uuid.UUID `gorm:"type:uuid;primary_key" json:"product_id"`
-	Stock_P      string    `gorm:"type:varchar(50);not_null" json:"stok_p"`
+	Stock_P      int32     `gorm:"type:varchar(50);not_null" json:"stok_p"`
 	Product_type string    `gorm:"type:varchar(50);not_null" json:"product_type"`
-	Price        string    `gorm:"type:varchar(50);not_null" json:"price"`
+	Price        int32     `gorm:"type:varchar(50);not_null" json:"price"`
 	Auditable
 }
 
-func NewProduct(product_id uuid.UUID, product_type string, stock_p, price string) *Product {
+func NewProduct(product_id uuid.UUID, stock_p int32, product_type string, price int32) *Product {
 	return &Product{
 		Product_ID:   product_id,
 		Stock_P:      stock_p,

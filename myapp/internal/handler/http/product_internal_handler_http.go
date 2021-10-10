@@ -13,28 +13,28 @@ import (
 
 // CreateProductBodyRequest defines all body attributes needed to add product.
 type CreateProductBodyRequest struct {
-	Stock_P      int64  `json:"stock_p" binding:"required"`
+	Stock_P      int32  `json:"stock_p" binding:"required"`
 	Product_type string `json:"product_type" binding:"required"`
-	Price        int64  `json:"price" binding:"required"`
+	Price        int32  `json:"price" binding:"required"`
 }
 
 // ProductRowResponse defines all attributes needed to fulfill for product row entity.
 type ProductRowResponse struct {
 	Product_ID   uuid.UUID `json:"product_id"`
-	Stock_P      int64     `json:"stock_p"`
+	Stock_P      int32     `json:"stock_p"`
 	Product_type string    `json:"product_type"`
-	Price        int64     `json:"price"`
+	Price        int32     `json:"price"`
 }
 
 // ProductResponse defines all attributes needed to fulfill for pic product entity.
 type ProductDetailResponse struct {
 	Product_ID   uuid.UUID `json:"product_id"`
-	Stock_P      string    `json:"stock_p"`
+	Stock_P      int32     `json:"stock_p"`
 	Product_type string    `json:"product_type"`
-	Price        string    `json:"price"`
+	Price        int32     `json:"price"`
 }
 
-func buildProductRowResponse(product *entity.Prodcut) ProductRowResponse {
+func buildProductRowResponse(product *entity.Product) ProductRowResponse {
 	form := ProductRowResponse{
 		Product_ID:   product.Product_ID,
 		Stock_P:      product.Stock_P,
@@ -108,7 +108,7 @@ func (handler *ProductHandler) CreateProduct(echoCtx echo.Context) error {
 		form.Price,
 	)
 
-	if err := handler.service.Create(echoCtx.Request().Context(), customerEntity); err != nil {
+	if err := handler.service.Create(echoCtx.Request().Context(), productEntity); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
@@ -129,7 +129,7 @@ func (handler *ProductHandler) GetListProduct(echoCtx echo.Context) error {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
-	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", customer)
+	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", product)
 	return echoCtx.JSON(res.Status, res)
 
 }
@@ -178,7 +178,7 @@ func (handler *ProductHandler) UpdateProduct(echoCtx echo.Context) error {
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	_, err = handler.service.GetDetailCustomer(echoCtx.Request().Context(), id)
+	_, err = handler.service.GetDetailProduct(echoCtx.Request().Context(), id)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)

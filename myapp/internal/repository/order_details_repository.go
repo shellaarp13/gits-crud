@@ -9,70 +9,70 @@ import (
 	"gorm.io/gorm"
 )
 
-// OrderDetailsRepository connects entity.OrderDetails with database.
-type OrderDetailsRepository struct {
+// Order_DetailsRepository connects entity.Order_Details with database.
+type Order_DetailsRepository struct {
 	db *gorm.DB
 }
 
-// NewOrderDetailsRepository creates an instance of RoleRepository.
-func NewOrderDetailsRepository(db *gorm.DB) *OrderDetailsRepository {
-	return &OrderDetailsRepository{
+// NewOrder_DetailsRepository creates an instance of RoleRepository.
+func NewOrder_DetailsRepository(db *gorm.DB) *Order_DetailsRepository {
+	return &Order_DetailsRepository{
 		db: db,
 	}
 }
 
-// Insert inserts order_details data to database.
-func (repo *OrderDetailsRepository) Insert(ctx context.Context, ent *entity.Order_details) error {
+// Insert inserts customer data to database.
+func (repo *Order_DetailsRepository) Insert(ctx context.Context, ent *entity.Order_Details) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.OrderDetails{}).
+		Model(&entity.Order_Details{}).
 		Create(ent).
 		Error; err != nil {
-		return errors.Wrap(err, "[OrderDetailsRepository-Insert]")
+		return errors.Wrap(err, "[Order_DetailsRepository-Insert]")
 	}
 	return nil
 }
 
-func (repo *OrderDetailsRepository) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error) {
-	var models []*entity.Order_details
+func (repo *Order_DetailsRepository) GetListOrder_Details(ctx context.Context, limit, offset string) ([]*entity.Order_Details, error) {
+	var models []*entity.Order_Details
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.OrderDetails{}).
+		Model(&entity.Order_Details{}).
 		Find(&models).
 		Error; err != nil {
-		return nil, errors.Wrap(err, "[OrderDetailsRepository-FindAll]")
+		return nil, errors.Wrap(err, "[Order_DetailsRepository-FindAll]")
 	}
 	return models, nil
 }
 
-func (repo *OrderDetailsRepository) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error) {
-	var models *entity.Order_details
+func (repo *Order_DetailsRepository) GetDetailOrder_Details(ctx context.Context, ID uuid.UUID) (*entity.Order_Details, error) {
+	var models *entity.Order_Details
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.OrderDetails{}).
+		Model(&entity.Order_Details{}).
 		Take(&models, ID).
 		Error; err != nil {
-		return nil, errors.Wrap(err, "[OrderDetailsRepository-FindById]")
+		return nil, errors.Wrap(err, "[Order_DetailsRepository-FindById]")
 	}
 	return models, nil
 }
 
-func (repo *OrderDetailsRepository) DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error {
+func (repo *Order_DetailsRepository) DeleteOrder_Details(ctx context.Context, ID uuid.UUID) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Delete(&entity.OrderDetails{Order_details_ID: ID}).Error; err != nil {
-		return errors.Wrap(err, "[OrderDetailsRepository-Delete]")
+		Delete(&entity.Order_Details{Order_details_id: ID}).Error; err != nil {
+		return errors.Wrap(err, "[Order_DetailsRepository-Delete]")
 	}
 	return nil
 }
 
-func (repo *Order_detailsRepository) UpdateOrder_details(ctx context.Context, ent *entity.Order_details) error {
+func (repo *Order_DetailsRepository) UpdateOrder_Details(ctx context.Context, ent *entity.Order_Details) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.Order_details{OrderDetails_ID: ent.OrderDetails_ID}).
+		Model(&entity.Order_Details{Order_details_id: ent.Order_details_id}).
 		Select("order_number", "product_id", "quantity_product").
 		Updates(ent).Error; err != nil {
-		return errors.Wrap(err, "[OrderDetailsRepository-Update]")
+		return errors.Wrap(err, "[Order_DetailsRepository-Update]")
 	}
 	return nil
 }
