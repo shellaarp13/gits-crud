@@ -13,6 +13,7 @@ type product struct {
 	Stock_P      int64     `gorm: "type:integer;not_null" json:"stok_p"`
 	Product_type string    `gorm: "type:varchar(50);not_null" json:"product_type"`
 	Price        int64     `gorm: "type:integer;not_null" json:"price"`
+	Auditable
 }
 
 func NewProduct(product_id uuid.UUID, product_type string, stock_p, price int) *product {
