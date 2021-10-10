@@ -13,6 +13,7 @@ import (
 
 // CreateProductBodyRequest defines all body attributes needed to add product.
 type CreateProductBodyRequest struct {
+	Product_name string `json:"product_name" binding:"required"`
 	Stock_P      int32  `json:"stock_p" binding:"required"`
 	Product_type string `json:"product_type" binding:"required"`
 	Price        int32  `json:"price" binding:"required"`
@@ -21,6 +22,7 @@ type CreateProductBodyRequest struct {
 // ProductRowResponse defines all attributes needed to fulfill for product row entity.
 type ProductRowResponse struct {
 	Product_ID   uuid.UUID `json:"product_id"`
+	Product_name string    `json:"product_name"`
 	Stock_P      int32     `json:"stock_p"`
 	Product_type string    `json:"product_type"`
 	Price        int32     `json:"price"`
@@ -29,6 +31,7 @@ type ProductRowResponse struct {
 // ProductResponse defines all attributes needed to fulfill for pic product entity.
 type ProductDetailResponse struct {
 	Product_ID   uuid.UUID `json:"product_id"`
+	Product_name string    `json:"product_name"`
 	Stock_P      int32     `json:"stock_p"`
 	Product_type string    `json:"product_type"`
 	Price        int32     `json:"price"`
@@ -37,6 +40,7 @@ type ProductDetailResponse struct {
 func buildProductRowResponse(product *entity.Product) ProductRowResponse {
 	form := ProductRowResponse{
 		Product_ID:   product.Product_ID,
+		Product_name: product.Product_name,
 		Stock_P:      product.Stock_P,
 		Product_type: product.Product_type,
 		Price:        product.Price,
@@ -47,6 +51,7 @@ func buildProductRowResponse(product *entity.Product) ProductRowResponse {
 func buildProductDetailResponse(product *entity.Product) ProductDetailResponse {
 	form := ProductDetailResponse{
 		Product_ID:   product.Product_ID,
+		Product_name: product.Product_name,
 		Stock_P:      product.Stock_P,
 		Product_type: product.Product_type,
 		Price:        product.Price,
@@ -103,6 +108,7 @@ func (handler *ProductHandler) CreateProduct(echoCtx echo.Context) error {
 
 	productEntity := entity.NewProduct(
 		uuid.Nil,
+		form.Product_name,
 		form.Stock_P,
 		form.Product_type,
 		form.Price,
@@ -186,6 +192,7 @@ func (handler *ProductHandler) UpdateProduct(echoCtx echo.Context) error {
 
 	productEntity := &entity.Product{
 		Product_ID:   id,
+		Product_name: form.Product_name,
 		Stock_P:      form.Stock_P,
 		Product_type: form.Product_type,
 		Price:        form.Price,

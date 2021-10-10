@@ -70,7 +70,7 @@ func (repo *ProductRepository) UpdateProduct(ctx context.Context, ent *entity.Pr
 	if err := repo.db.
 		WithContext(ctx).
 		Model(&entity.Product{Product_ID: ent.Product_ID}).
-		Select("stock_p", "product_type", "price").
+		Select("product_name", "stock_p", "product_type", "price").
 		Updates(ent).Error; err != nil {
 		return errors.Wrap(err, "[ProductRepository-Update]")
 	}
