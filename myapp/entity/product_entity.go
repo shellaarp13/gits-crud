@@ -17,7 +17,7 @@ type product struct {
 }
 
 func NewProduct(product_id uuid.UUID, product_type string, stock_p, price int) *product {
-	return &Product{
+	return &product{
 		Product_ID:   product_id,
 		Stock_P:      int64(stock_p),
 		Product_type: product_type,
@@ -27,6 +27,6 @@ func NewProduct(product_id uuid.UUID, product_type string, stock_p, price int) *
 }
 
 //Table specifies table name for Product
-func (model *Product) TableName() string {
+func (model *product) TableName() string {
 	return ProductTableName
 }
