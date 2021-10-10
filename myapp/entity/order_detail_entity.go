@@ -13,8 +13,6 @@ type order_details struct {
 	Order_number      	int64     `gorm:type:integer;not_null" json:"order_number"`
 	Product_id       	uuid.UUID `gorm:type:uuid;not_null" json:"product_id"`
 	Quantity_product 	int64     `gorm:type:integer;not_null" json:"quantity_product"`
-	Order            	*Order    `gorm:"foreignKey:Order_number" json:"order_number`
-	Product          	*Product  `gorm:"foreignKey:Product_id" json:"product_id"`
 	Auditable
 }
 
