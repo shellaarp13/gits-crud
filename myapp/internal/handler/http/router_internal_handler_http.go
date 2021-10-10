@@ -6,7 +6,7 @@ import (
 
 // NewGinEngine creates an instance of echo.Engine.
 // gin.Engine already implements net/http.Handler interface.
-func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword string) *echo.Echo {
+func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword, orderdetailsHandler *OrderDetailsHandler, productHandler *ProductHandler string) *echo.Echo {
 	engine := echo.New()
 
 	engine.GET("/", Status)
@@ -31,6 +31,19 @@ func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandl
 	engine.GET("/get-order/:id", orderHandler.GetDetailOrder)
 	engine.PUT("/update-order/:id", orderHandler.UpdateOrder)
 	engine.DELETE("/delete-order/:id", orderHandler.DeleteOrder)
+
+	engine.POST("/create-orderdetails", orderdetailsHandler.CreateOrderDetails)
+	engine.GET("/list-orderdetails", orderdetailsHandler.GetListOrderDetails)
+	engine.GET("/get-orderdetails/:id", orderdetailsHandler.GetDetailOrderDetails)
+	engine.PUT("/update-orderdetails/:id", orderdetailsHandler.UpdateOrderDetails)
+	engine.DELETE("/delete-orderdetails/:id", orderdetailsHandler.DeleteOrderDetails)
+
+	engine.POST("/create-product", productHandler.CreateProduct)
+	engine.GET("/list-order", productHandler.GetListProduct)
+	engine.GET("/get-order/:id", productHandler.GetDetailProduct)
+	engine.PUT("/update-order/:id", productHandler.UpdateProduct)
+	engine.DELETE("/delete-order/:id", productHandler.DeleteProduct)
+
 
 	return engine
 }
