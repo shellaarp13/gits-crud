@@ -57,10 +57,11 @@ func (repo *OrderRepository) GetDetailOrder(ctx context.Context, ID uuid.UUID) (
 	return models, nil
 }
 
-func (repo *OrderRepository) DeleteOrder(ctx context.Context, ID uuid.UUID) error {
+func (repo *OrderRepository) DeleteOrder(ctx context.Context, Order_Number uuid.UUID) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Delete(&entity.Order{Order_Number: ID}).Error; err != nil {
+		Where("order_number = ?", Order_Number).
+		Delete(&entity.Order{Order_Number: Order_Number}).Error; err != nil {
 		return errors.Wrap(err, "[OrderRepository-Delete]")
 	}
 	return nil
@@ -69,6 +70,7 @@ func (repo *OrderRepository) DeleteOrder(ctx context.Context, ID uuid.UUID) erro
 func (repo *OrderRepository) UpdateOrder(ctx context.Context, ent *entity.Order) error {
 	if err := repo.db.
 		WithContext(ctx).
+		Where("order_number = ?", ent.Order_Number).
 		Model(&entity.Order{Order_Number: ent.Order_Number}).
 		Select("customer_id", "customer_name", "to_street", "to_city", "to_zip", "ship_date").
 		Updates(ent).Error; err != nil {

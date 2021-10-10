@@ -19,7 +19,6 @@ type CreateOrderBodyRequest struct {
 	To_street     string    `gorm:"json:"to_street" binding:"required"`
 	To_city       string    `gorm:"json:"to_city" binding:"required"`
 	To_zip        string    `gorm:"json:"to_zip" binding:"required"`
-	Ship_date     time.Time `gorm:"json:"ship_date" binding:"required"`
 }
 
 // OrderRowResponse defines all attributes needed to fulfill for order row entity.
@@ -126,7 +125,7 @@ func (handler *OrderHandler) CreateOrder(echoCtx echo.Context) error {
 		form.To_street,
 		form.To_city,
 		form.To_zip,
-		form.Ship_date,
+		time.Now(),
 	)
 
 	if err := handler.service.Create(echoCtx.Request().Context(), orderEntity); err != nil {
@@ -212,7 +211,7 @@ func (handler *OrderHandler) UpdateOrder(echoCtx echo.Context) error {
 		To_street:     form.To_street,
 		To_city:       form.To_city,
 		To_zip:        form.To_zip,
-		Ship_date:     form.Ship_date,
+		Ship_date:     time.Now(),
 	}
 
 	if err := handler.service.UpdateOrder(echoCtx.Request().Context(), orderEntity); err != nil {
