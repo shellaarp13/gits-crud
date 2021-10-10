@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	OderDetailsTableName = "order_details"
+	OrderDetailsTableName = "order_details"
 )
 
 type order_details struct {
