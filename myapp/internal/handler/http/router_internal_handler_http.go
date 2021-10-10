@@ -6,7 +6,7 @@ import (
 
 // NewGinEngine creates an instance of echo.Engine.
 // gin.Engine already implements net/http.Handler interface.
-func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword, orderdetailsHandler *OrderDetailsHandler, productHandler *ProductHandler string) *echo.Echo {
+func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword, orderdetailsHandler *OrderDetailsHandler, productHandler string) *echo.Echo {
 	engine := echo.New()
 
 	engine.GET("/", Status)
