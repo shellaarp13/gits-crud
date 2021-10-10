@@ -25,7 +25,7 @@ func NewOrderDetailsRepository(db *gorm.DB) *OrderDetailsRepository {
 func (repo *OrderDetailsRepository) Insert(ctx context.Context, ent *entity.OrderDetails) error {
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.Customer{}).
+		Model(&entity.OrderDetails{}).
 		Create(ent).
 		Error; err != nil {
 		return errors.Wrap(err, "[OrderDetailsRepository-Insert]")
@@ -37,7 +37,7 @@ func (repo *OrderDetailsRepository) GetListOrderDetails(ctx context.Context, lim
 	var models []*entity.OrderDetails
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.Customer{}).
+		Model(&entity.OrderDetails{}).
 		Find(&models).
 		Error; err != nil {
 		return nil, errors.Wrap(err, "[OrderDetailsRepository-FindAll]")
@@ -49,7 +49,7 @@ func (repo *OrderDetailsRepository) GetDetailOrderDetails(ctx context.Context, I
 	var models *entity.OrderDetails
 	if err := repo.db.
 		WithContext(ctx).
-		Model(&entity.Customer{}).
+		Model(&entity.OrderDetails{}).
 		Take(&models, ID).
 		Error; err != nil {
 		return nil, errors.Wrap(err, "[OrderDetailsRepository-FindById]")
