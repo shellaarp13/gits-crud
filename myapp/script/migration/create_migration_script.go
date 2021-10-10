@@ -37,6 +37,8 @@ func main() {
 
 	// Migrate rest of the models
 	log.Info().Msg("AutoMigrate Model [table_name]")
+	db.AutoMigrate(&entity.Account{})
+	log.Info().Msg("AccountModel [" + (&entity.Account{}).TableName() + "]")
 	db.AutoMigrate(&entity.Customer{})
 	log.Info().Msg("CustomerModel [" + (&entity.Customer{}).TableName() + "]")
 	db.AutoMigrate(&entity.Order{})

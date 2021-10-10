@@ -1,20 +1,17 @@
 package entity
 
-import (
-	"github.com/google/uuid"
-)
-
 const (
 	AccountTableName = "Account"
 )
 
 //AccountModel is a model for entity.Account
 type Account struct {
-	Username uuid.UUID `gorm:"type:uuid;primary_key" json:"username"`
-	Password string    `gorm:"type:varchar(50);not_null" json:"password"`
+	Username string `gorm:"type:varchar(50);primary_key" json:"username"`
+	Password string `gorm:"type:varchar(150);not_null" json:"password"`
+	Auditable
 }
 
-func NewAccount(Username uuid.UUID, password string) *Account {
+func NewAccount(username, password string) *Account {
 	return &Account{
 		Username:  username,
 		Password:  password,

@@ -38,9 +38,10 @@ func main() {
 		}
 	}()
 
+	accountHandler := buildAccountHandler(db)
 	customerHandler := buildCustomerHandler(db)
 	orderHandler := buildOrderHandler(db)
-	engine := http.NewGinEngine(customerHandler, orderHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
+	engine := http.NewGinEngine(accountHandler, customerHandler, orderHandler, cfg.InternalConfig.Username, cfg.InternalConfig.Password)
 
 	server := &nethttp.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
@@ -103,6 +104,12 @@ func checkError(err error) {
 	}
 }
 
+func buildAccountHandler(db *gorm.DB) *http.AccountHandler {
+	repo := repository.NewAccountRepository(db)
+	accountService := service.NewAccountService(repo)
+	return http.NewAccountHandler(accountService)
+}
+
 func buildCustomerHandler(db *gorm.DB) *http.CustomerHandler {
 	repo := repository.NewCustomerRepository(db)
 	customerService := service.NewCustomerService(repo)
@@ -115,20 +122,14 @@ func buildOrderHandler(db *gorm.DB) *http.OrderHandler {
 	return http.NewOrderHandler(orderService)
 }
 
-func buildAccountHandler(db *gorm.DB) *http.AccountHandler {
-	repo := repository.NewAccountHandlerRepository(db)
-	accountService := service.NewAccountService(repo)
-	return http.NewAccountHandler(accountService)
-}
+// func buildOrderDetailsHandler(db *gorm.DB) *http.OrderDetailsHandler {
+// 	repo := repository.NewOderDetailsRepository(db)
+// 	orderService := service.NewOrderDetailsService(repo)
+// 	return http.NewOrderDetailsHandler(orderService)
+// }
 
-func buildOrderDetailsHandler(db *gorm.DB) *http.OrderDetailsHandler {
-	repo := repository.NewOderDetailsRepository(db)
-	orderService := service.NewOrderDetailsService(repo)
-	return http.NewOrderDetailsHandler(orderService)
-}
-
-func buildProductHandler(db *gorm.DB) *hhtp.ProductHandler {
-	repo := repository.NewProductRepository(db)
-	productService := service.NewProductService(repo)
-	return http.NewProductHandler(productService)
-}
+// func buildProductHandler(db *gorm.DB) *hhtp.ProductHandler {
+// 	repo := repository.NewProductRepository(db)
+// 	productService := service.NewProductService(repo)
+// 	return http.NewProductHandler(productService)
+// }

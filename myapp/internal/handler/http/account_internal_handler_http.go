@@ -1,31 +1,34 @@
 package http
 
 import (
+	"fmt"
 	"myapp/entity"
 	"myapp/service"
 
 	"net/http"
 	nethttp "net/http"
 
-	"github.com/google/uuid"
+	"myapp/internal/tool/encrypter"
+
 	"github.com/labstack/echo/v4"
 )
 
-// CreateAccountBodyRequest defines all body attributes needed to add customer.
+// CreateAccountBodyRequest defines all body attributes needed to add account.
 type CreateAccountBodyRequest struct {
+	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-// AccountRowResponse defines all attributes needed to fulfill for customer row entity.
+// AccountRowResponse defines all attributes needed to fulfill for account row entity.
 type AccountRowResponse struct {
-	Username uuid.UUID `json:"username"`
-	Password string    `json:"password"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // AccountResponse defines all attributes needed to fulfill for pic account entity.
 type AccountDetailResponse struct {
-	Username uuid.UUID `json:"username"`
-	Password string    `json:"password"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func buildAccountRowResponse(account *entity.Account) AccountRowResponse {
@@ -33,19 +36,20 @@ func buildAccountRowResponse(account *entity.Account) AccountRowResponse {
 		Username: account.Username,
 		Password: account.Password,
 	}
+
 	return form
 }
 
-func buildAccountDetailResponse(account *entity.account) AccountDetailResponse {
+func buildAccountDetailResponse(account *entity.Account) AccountDetailResponse {
 	form := AccountDetailResponse{
 		Username: account.Username,
-		Password: account.password,
+		Password: account.Password,
 	}
 
 	return form
 }
 
-// QueryParamsCustomer defines all attributes for input query params
+// QueryParamsAccount defines all attributes for input query params
 type QueryParamsAccount struct {
 	Limit  string `form:"limit"`
 	Offset string `form:"offset"`
@@ -54,14 +58,14 @@ type QueryParamsAccount struct {
 	Status string `form:"status"`
 }
 
-// MetaCustomer define attributes needed for Meta
+// MetaAccount define attributes needed for Meta
 type MetaAccount struct {
 	Limit  int   `json:"limit"`
 	Offset int   `json:"offset"`
 	Total  int64 `json:"total"`
 }
 
-// NewMetaCustomer creates an instance of Meta response.
+// NewMetaAccount creates an instance of Meta response.
 func NewMetaAccount(limit, offset int, total int64) *MetaAccount {
 	return &MetaAccount{
 		Limit:  limit,
@@ -92,9 +96,15 @@ func (handler *AccountHandler) CreateAccount(echoCtx echo.Context) error {
 
 	}
 
+	password, err := encrypter.NewBcrypt().Encrypt(form.Password)
+	if err != nil {
+		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
+		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
+	}
+
 	accountEntity := entity.NewAccount(
-		uuid.Nil,
-		form.Password,
+		form.Username,
+		password,
 	)
 
 	if err := handler.service.Create(echoCtx.Request().Context(), accountEntity); err != nil {
@@ -106,37 +116,32 @@ func (handler *AccountHandler) CreateAccount(echoCtx echo.Context) error {
 	return echoCtx.JSON(res.Status, res)
 }
 
-func (handler *AccountHandler) GetListCustomer(echoCtx echo.Context) error {
+func (handler *AccountHandler) GetListAccount(echoCtx echo.Context) error {
 	var form QueryParamsAccount
 	if err := echoCtx.Bind(&form); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
 		return echoCtx.JSON(nethttp.StatusBadRequest, errorResponse)
 	}
 
-	customer, err := handler.service.GetListCustomer(echoCtx.Request().Context(), form.Limit, form.Offset)
+	account, err := handler.service.GetListAccount(echoCtx.Request().Context(), form.Limit, form.Offset)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
-	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", customer)
+	var res = entity.NewResponse(nethttp.StatusOK, "Request processed successfully.", account)
 	return echoCtx.JSON(res.Status, res)
 
 }
 
 func (handler *AccountHandler) GetDetailAccount(echoCtx echo.Context) error {
 	idParam := echoCtx.Param("id")
+	fmt.Println(idParam)
 	if len(idParam) == 0 {
 		errorResponse := buildErrorResponse(nil, entity.ErrInvalidInput)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	id, err := uuid.Parse(idParam)
-	if err != nil {
-		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
-		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
-	}
-
-	account, err := handler.service.GetDetailAccount(echoCtx.Request().Context(), id)
+	account, err := handler.service.GetDetailAccount(echoCtx.Request().Context(), idParam)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
@@ -161,24 +166,24 @@ func (handler *AccountHandler) UpdateAccount(echoCtx echo.Context) error {
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	id, err := uuid.Parse(idParam)
-	if err != nil {
-		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
-		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
-	}
-
-	_, err = handler.service.GetDetailAccount(echoCtx.Request().Context(), id)
+	_, err := handler.service.GetDetailAccount(echoCtx.Request().Context(), idParam)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	AccountEntity := &entity.Account{
-		username: id,
-		Password: form.Password,
+	password, err := encrypter.NewBcrypt().Encrypt(form.Password)
+	if err != nil {
+		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
+		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
 
-	if err := handler.service.UpdateAccount(echoCtx.Request().Context(), AccountEntity); err != nil {
+	accountEntity := &entity.Account{
+		Username: form.Username,
+		Password: password,
+	}
+
+	if err := handler.service.UpdateAccount(echoCtx.Request().Context(), idParam, accountEntity); err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(nethttp.StatusInternalServerError, errorResponse)
 	}
@@ -194,13 +199,7 @@ func (handler *AccountHandler) DeleteAccount(echoCtx echo.Context) error {
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
 	}
 
-	id, err := uuid.Parse(idParam)
-	if err != nil {
-		errorResponse := buildErrorResponse(err, entity.ErrInvalidInput)
-		return echoCtx.JSON(http.StatusBadRequest, errorResponse)
-	}
-
-	err = handler.service.DeleteAccount(echoCtx.Request().Context(), id)
+	err := handler.service.DeleteAccount(echoCtx.Request().Context(), idParam)
 	if err != nil {
 		errorResponse := buildErrorResponse(err, entity.ErrInternalServerError)
 		return echoCtx.JSON(http.StatusBadRequest, errorResponse)

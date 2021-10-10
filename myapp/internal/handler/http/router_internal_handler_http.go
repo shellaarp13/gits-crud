@@ -6,7 +6,7 @@ import (
 
 // NewGinEngine creates an instance of echo.Engine.
 // gin.Engine already implements net/http.Handler interface.
-func NewGinEngine(customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword string) *echo.Echo {
+func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandler, orderHandler *OrderHandler, internalUsername, internalPassword string) *echo.Echo {
 	engine := echo.New()
 
 	// CORS
@@ -19,6 +19,12 @@ func NewGinEngine(customerHandler *CustomerHandler, orderHandler *OrderHandler, 
 	engine.GET("/", Status)
 	engine.GET("/health", Health)
 	engine.GET("/version", Version)
+
+	engine.POST("/create-account", accountHandler.CreateAccount)
+	engine.GET("/list-account", accountHandler.GetListAccount)
+	engine.GET("/get-account/:id", accountHandler.GetDetailAccount)
+	engine.PUT("/update-account/:id", accountHandler.UpdateAccount)
+	engine.DELETE("/delete-account/:id", accountHandler.DeleteAccount)
 
 	engine.POST("/create-customer", customerHandler.CreateCustomer)
 	engine.GET("/list-customer", customerHandler.GetListCustomer)
