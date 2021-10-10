@@ -33,10 +33,10 @@ func NewGinEngine(accountHandler *AccountHandler, customerHandler *CustomerHandl
 	engine.DELETE("/delete-order/:id", orderHandler.DeleteOrder)
 
 	engine.POST("/create-product", productHandler.CreateProduct)
-	engine.GET("/list-order", productHandler.GetListProduct)
-	engine.GET("/get-order/:id", productHandler.GetDetailProduct)
-	engine.PUT("/update-order/:id", productHandler.UpdateProduct)
-	engine.DELETE("/delete-order/:id", productHandler.DeleteProduct)
+	engine.GET("/list-product", productHandler.GetListProduct)
+	engine.GET("/get-product/:id", productHandler.GetDetailProduct)
+	engine.PUT("/update-product/:id", productHandler.UpdateProduct)
+	engine.DELETE("/delete-product/:id", productHandler.DeleteProduct)
 
 	engine.POST("/create-orderdetails", orderdetailsHandler.CreateOrder_Details)
 	engine.GET("/list-orderdetails", orderdetailsHandler.GetListOrder_Details)
