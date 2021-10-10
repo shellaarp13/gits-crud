@@ -16,7 +16,7 @@ type product struct {
 }
 
 func NewProduct(product_id uuid.UUID, product_type string, stock_p, price int) *product {
-	return &product{
+	return &Product{
 		Product_ID:   product_id,
 		Stock_P:      int64(stock_p),
 		Product_type: product_type,
