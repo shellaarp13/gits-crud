@@ -27,22 +27,22 @@ func NewOrderDetailsService(orderdetailsRepo OrderDetailsRepository) *OrderDetai
 }
 
 type OrderDetailsUseCase interface {
-	Create(ctx context.Context, orderdetails *entity.OrderDetails) error
-	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.OrderDetails, error)
-	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.OrderDetails, error)
-	UpdateOrderDetails(ctx context.Context, orderdetails *entity.OrderDetails) error
+	Create(ctx context.Context, orderdetails *entity.Order_details) error
+	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error)
+	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error)
+	UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error
 	DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error
 }
 
 type OrderDetailsRepository interface {
-	Insert(ctx context.Context, orderdetails *entity.OrderDetails) error
-	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.OrderDetails, error)
-	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.OrderDetails, error)
-	UpdateOrderDetails(ctx context.Context, orderdetails *entity.OrderDetails) error
+	Insert(ctx context.Context, orderdetails *entity.Order_details) error
+	GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error)
+	GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error)
+	UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error
 	DeleteOrderDetails(ctx context.Context, ID uuid.UUID) error
 }
 
-func (svc OrderDetailsService) Create(ctx context.Context, orderdetails *entity.OrderDetails) error {
+func (svc OrderDetailsService) Create(ctx context.Context, orderdetails *entity.Order_details) error {
 	// Checking nil order details
 	if orderdetails == nil {
 		return ErrNilOrderDetails
@@ -59,7 +59,7 @@ func (svc OrderDetailsService) Create(ctx context.Context, orderdetails *entity.
 	return nil
 }
 
-func (svc OrderDetailsService) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.OrderDetails, error) {
+func (svc OrderDetailsService) GetListOrderDetails(ctx context.Context, limit, offset string) ([]*entity.Order_details, error) {
 	orderdetails, err := svc.orderdetailsRepo.GetListOrderDetails(ctx, limit, offset)
 	if err != nil {
 		return nil, errors.Wrap(err, "[OrderDetailsService-List]")
@@ -67,7 +67,7 @@ func (svc OrderDetailsService) GetListOrderDetails(ctx context.Context, limit, o
 	return orderdetails, nil
 }
 
-func (svc OrderDetailsService) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.OrderDetails, error) {
+func (svc OrderDetailsService) GetDetailOrderDetails(ctx context.Context, ID uuid.UUID) (*entity.Order_details, error) {
 	orderdetails, err := svc.orderdetailsRepo.GetDetailOrderDetails(ctx, ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "[OrderDetailsService-Detail]")
@@ -83,7 +83,7 @@ func (svc OrderDetailsService) DeleteOrderDetails(ctx context.Context, ID uuid.U
 	return nil
 }
 
-func (svc OrderDetailsService) UpdateOrderDetails(ctx context.Context, orderdetails *entity.OrderDetails) error {
+func (svc OrderDetailsService) UpdateOrderDetails(ctx context.Context, orderdetails *entity.Order_details) error {
 	// Checking nil order details
 	if orderdetails == nil {
 		return ErrNilOrderDetails
