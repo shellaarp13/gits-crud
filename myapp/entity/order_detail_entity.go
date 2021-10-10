@@ -9,16 +9,16 @@ const (
 )
 
 type order_details struct {
-	Oder_details_id  uuid.UUID `gorm:type:uuid;primary_key" json:"oder_details"`
-	Oder_number      int64     `gorm:type:integer;not_null" json:"oder_number"`
-	Product_id       uuid.UUID `gorm:type:uuid;not_null" json:"product_id"`
-	Quantity_product int64     `gorm:type:integer;not_null" json:"quantity_product"`
-	Order            *Order    `gorm:"foreignKey:Order_number" json:"order_number`
-	Product          *Product  `gorm:"foreignKey:Product_id" json:"product_id"`
+	Order_details_id  	uuid.UUID `gorm:type:uuid;primary_key" json:"order_details"`
+	Order_number      	int64     `gorm:type:integer;not_null" json:"order_number"`
+	Product_id       	uuid.UUID `gorm:type:uuid;not_null" json:"product_id"`
+	Quantity_product 	int64     `gorm:type:integer;not_null" json:"quantity_product"`
+	Order            	*Order    `gorm:"foreignKey:Order_number" json:"order_number`
+	Product          	*Product  `gorm:"foreignKey:Product_id" json:"product_id"`
 	Auditable
 }
 
-func NewOderDetails(oder_details_id, product_id uuid.UUID, order_number, quantity_product int) *OderDetails {
+func NewOrderDetails(order_details_id, product_id uuid.UUID, order_number, quantity_product int) *OrderDetails {
 	return &OrderDetails{
 		Order_details_id: order_details_id,
 		Order_number:     order_number,
@@ -28,6 +28,6 @@ func NewOderDetails(oder_details_id, product_id uuid.UUID, order_number, quantit
 	}
 }
 
-func (model *OderDetails) TableName() string {
-	return OderDetailsTableName
+func (model *OrderDetails) TableName() string {
+	return OrderDetailsTableName
 }
