@@ -6,6 +6,92 @@
 	},
 	"item": [
 		{
+			"name": "myapp",
+			"item": [
+				{
+					"name": "home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/version",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/health",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Username\": \"Risky\",\r\n\t\"Password\": \"Kurniawan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}:{{port}}/register",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "account",
 			"item": [
 				{
@@ -274,6 +360,140 @@
 			]
 		},
 		{
+			"name": "product",
+			"item": [
+				{
+					"name": "create-product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Product_name\":\"Semangka\",\r\n    \"Stock_P\": 20,\r\n\t\"Product_type\": \"Makanan\",\r\n\t\"Price\": 10000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}:{{port}}/create-product",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"create-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Product_name\":\"Semangka\",\r\n    \"Stock_P\": 20,\r\n\t\"Product_type\": \"Makanan\",\r\n\t\"Price\": 5000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}:{{port}}/update-product/:id",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"update-product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/list-product",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"list-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/get-product/:id",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get-product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/delete-product/:id",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"delete-product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "order",
 			"item": [
 				{
@@ -283,7 +503,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Customer_ID\":\"85a3bd8e-02c0-4004-adb1-abe0757819c2\",\r\n\t\"Customer_Name\":\"Risky Kurniawan\",\r\n\t\"To_street\": \"Parigi\",\r\n\t\"To_city\":\"Pangandaran\",\r\n\t\"To_zip\":\"46393\"\r\n}",
+							"raw": "{\r\n\t\"Customer_ID\":\"61b3f40e-1af4-43e2-a424-08917422882e\",\r\n\t\"Customer_Name\":\"Risky Kurniawan\",\r\n\t\"To_street\": \"Parigi\",\r\n\t\"To_city\":\"Pangandaran\",\r\n\t\"To_zip\":\"46393\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -408,57 +628,132 @@
 			]
 		},
 		{
-			"name": "myapp",
+			"name": "orderdetails",
 			"item": [
 				{
-					"name": "home",
+					"name": "create-orderdetails",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Order_Number\": \"c051b383-1110-409b-a569-d53f92ad9ed0\",\r\n\t\"Product_ID\": \"1d9e2011-d3cf-4725-9cf7-bf2e63806bf5\",\r\n\t\"Quantity_product\": 12\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{server}}:{{port}}/",
+							"raw": "{{server}}:{{port}}/create-orderdetails",
 							"host": [
 								"{{server}}"
 							],
 							"port": "{{port}}",
 							"path": [
-								""
+								"create-orderdetails"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "version",
+					"name": "update-orderdetails",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Order_Number\": \"c051b383-1110-409b-a569-d53f92ad9ed0\",\r\n\t\"Product_ID\": \"1d9e2011-d3cf-4725-9cf7-bf2e63806bf5\",\r\n\t\"Quantity_product\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{server}}:{{port}}/version",
+							"raw": "{{server}}:{{port}}/update-orderdetails/:id",
 							"host": [
 								"{{server}}"
 							],
 							"port": "{{port}}",
 							"path": [
-								"version"
+								"update-orderdetails",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "health",
+					"name": "list-orderdetails",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{server}}:{{port}}/health",
+							"raw": "{{server}}:{{port}}/list-orderdetails",
 							"host": [
 								"{{server}}"
 							],
 							"port": "{{port}}",
 							"path": [
-								"health"
+								"list-orderdetails"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-orderdetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/get-orderdetails/:id",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get-orderdetails",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-orderdetails",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}:{{port}}/delete-orderdetails/:id",
+							"host": [
+								"{{server}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"delete-orderdetails",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
